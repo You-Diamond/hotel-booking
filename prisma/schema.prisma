@@ -1,0 +1,77 @@
+// prisma/schema.prisma
+
+// === ВОТ ЭТИХ ДВУХ БЛОКОВ НЕ ХВАТАЛО ===
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// === ДАЛЬШЕ ИДУТ НАШИ МОДЕЛИ БЕЗ ИЗМЕНЕНИЙ ===
+model User {
+  id        String    @id @default(uuid())
+  firstName String
+  lastName  String
+  email     String    @unique
+  password  String
+  role      String    @default("USER") 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  bookings  Booking[]
+  reviews   Review[]
+}
+
+model Hotel {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  city        String
+  rating      Float
+  image       String
+  createdAt   DateTime @default(now())
+  rooms       Room[]
+  reviews   Review[]
+}
+
+model Room {
+  id            String    @id @default(uuid())
+  name          String
+  capacity      Int
+  pricePerNight Int
+  hotelId       String
+  hotel         Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  bookings      Booking[]
+}
+
+model Booking {
+  id         String   @id @default(uuid())
+  userId     String
+  roomId     String
+  hotelName  String   
+  city       String   
+  roomName   String
+  image      String   
+  dates      String   
+  totalPrice Int
+  status     String   @default("active") 
+  createdAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  room       Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  rating    Int      // Оценка от 1 до 5
+  text      String   // Текст отзыва
+  userId    String
+  hotelId   String
+  createdAt DateTime @default(now())
+
+  // Связи
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hotel     Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+}
