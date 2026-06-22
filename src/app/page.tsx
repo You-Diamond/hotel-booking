@@ -1,5 +1,6 @@
 // src/app/page.tsx
 import Link from 'next/link';
+import Image from 'next/image';
 import { db } from '@/lib/db';
 import MainSearchPanel from '@/components/MainSearchPanel';
 
@@ -22,11 +23,15 @@ export default async function HomePage() {
       
       {/* === HERO BANNER WITH COMPACT SEARCH === */}
       <section className="relative h-[75vh] min-h-[550px] max-h-[750px] mx-6 mt-4 rounded-3xl overflow-hidden shadow-xl flex items-center justify-center">
-        <div 
-          className="absolute inset-0 bg-cover bg-center brightness-75 scale-102"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2000&auto=format&fit=crop')" }}
+        {/* Использование Next.js Image для баннера */}
+        <Image 
+          src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2000&auto=format&fit=crop"
+          alt="Luxury Hotel"
+          fill
+          priority // Загружаем баннер в первую очередь
+          className="object-cover brightness-75 scale-102"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/50 via-zinc-900/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/50 via-zinc-900/20 to-transparent z-10" />
 
         <div className="relative z-10 w-full max-w-4xl mx-auto px-6 text-center space-y-8">
           <div className="space-y-4">
@@ -57,13 +62,16 @@ export default async function HomePage() {
               href={`/hotels?city=${encodeURIComponent(city.name)}`}
               className="group relative h-72 rounded-2xl overflow-hidden cursor-pointer shadow-xs hover:shadow-lg transition-all duration-300 block"
             >
-              <img 
+              {/* Заменено на Next.js Image с проксированием */}
+              <Image 
                 src={`https://images.unsplash.com/photo-${city.imgId}?q=80&w=600&auto=format&fit=crop`}
                 alt={city.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-95"
+                fill
+                sizes="(max-width: 768px) 50vw, 25vw"
+                className="object-cover group-hover:scale-105 transition-transform duration-700 brightness-95"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-zinc-950/20 to-transparent" />
-              <div className="absolute bottom-5 left-5 text-white">
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-zinc-950/20 to-transparent z-10" />
+              <div className="absolute bottom-5 left-5 text-white z-10">
                 <h3 className="text-lg font-bold tracking-tight">{city.name}</h3>
                 <p className="text-xs text-zinc-200/80 mt-0.5">Смотреть отели →</p>
               </div>
@@ -86,18 +94,20 @@ export default async function HomePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {recommendedHotels.map((hotel) => (
-            /* КОРНЕВОЙ КОНТЕЙНЕР: Теперь имеет класс relative для работы stretched-ссылки */
             <div 
               key={hotel.id} 
               className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-zinc-200/60 hover:shadow-xl hover:border-zinc-300/80 transition-all duration-300 relative text-left"
             >
               
-              {/* Картинка */}
+              {/* Картинка отеля */}
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-100">
-                <img 
+                {/* Заменено на Next.js Image для картинок из БД */}
+                <Image 
                   src={hotel.image} 
                   alt={hotel.name} 
-                  className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500" 
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-103 transition-transform duration-500" 
                 />
                 <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-xs px-2.5 py-1 rounded-lg text-xs font-bold text-zinc-950 shadow-xs flex items-center gap-1 z-10">
                   ★ {hotel.rating.toFixed(1)}
@@ -126,8 +136,6 @@ export default async function HomePage() {
                     <span className="text-base font-extrabold text-zinc-900">Premium класс</span>
                   </div>
                   
-                  {/* ССЫЛКА-КНОПКА: Свойство after:absolute after:inset-0 растягивает кликабельную область 
-                      на всю площадь карточки без нарушения валидности HTML спецификации */}
                   <Link 
                     href={`/hotels/${hotel.id}`} 
                     className="inline-flex items-center justify-center bg-zinc-900 group-hover:bg-indigo-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all duration-200 after:absolute after:inset-0 after:z-10"
