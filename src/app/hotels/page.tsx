@@ -1,5 +1,6 @@
 // src/app/hotels/page.tsx
 import Link from 'next/link';
+import Image from 'next/image';
 import { db } from '@/lib/db';
 
 interface HotelsPageProps {
@@ -137,18 +138,20 @@ export default async function HotelsPage({ searchParams }: HotelsPageProps) {
                 const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
 
                 return (
-                  /* ИЗМЕНЕНИЕ 1: Карточка теперь — это валидный div c позиционированием relative */
                   <div 
                     key={hotel.id} 
                     className="group bg-white border border-zinc-200 rounded-3xl overflow-hidden shadow-xs hover:shadow-md hover:border-zinc-300 transition-all duration-200 flex flex-col justify-between relative text-left"
                   >
                     <div>
-                      {/* Картинка */}
+                      {/* Контейнер картинки */}
                       <div className="relative aspect-video bg-zinc-100 overflow-hidden">
-                        <img 
+                        {/* Заменено на Next.js Image */}
+                        <Image 
                           src={hotel.image} 
                           alt={hotel.name} 
-                          className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300" 
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover group-hover:scale-103 transition-transform duration-300" 
                         />
                         <span className="absolute top-4 left-4 bg-white/90 backdrop-blur-xs px-3 py-1 rounded-lg text-xs font-bold text-zinc-900 shadow-xs z-10">
                           ⭐ {hotel.rating.toFixed(1)}
@@ -157,8 +160,6 @@ export default async function HotelsPage({ searchParams }: HotelsPageProps) {
 
                       {/* Текстовый контент */}
                       <div className="p-6 space-y-2">
-                        
-                        {/* ИЗМЕНЕНИЕ 2: Город является самостоятельной ссылкой. Класс relative z-25 ставит его выше растянутой ссылки */}
                         <div className="relative z-25 inline-block">
                           <Link 
                             href={`/hotels?city=${hotel.city}`}
@@ -186,9 +187,6 @@ export default async function HotelsPage({ searchParams }: HotelsPageProps) {
                         </span>
                       </div>
                       
-                      {/* ИЗМЕНЕНИЕ 3: Кнопка стала настоящим Link. 
-                          Класс "after:absolute after:inset-0" создает невидимый слой на ВСЮ карточку.
-                          Клик по любому месту карточки активирует именно эту ссылку! */}
                       <Link 
                         href={`/hotels/${hotel.id}`}
                         className="bg-zinc-900 group-hover:bg-indigo-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-colors after:absolute after:inset-0 after:z-10"

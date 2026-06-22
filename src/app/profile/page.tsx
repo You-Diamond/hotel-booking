@@ -48,7 +48,7 @@ export default async function ProfilePage() {
           firstName: dbUser.firstName || 'Имя',
           lastName: dbUser.lastName || 'Фамилия',
           email: dbUser.email || '',
-          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+          avatar: 'https://images.icon-icons.com/3446/PNG/512/profile_user_avatar_people_icon_219228.png?q=80&w=200&auto=format&fit=crop',
           joinedDate: 'май 2026',
           role: dbUser.role, // <-- Теперь это поле легально и типизировано!
         }}

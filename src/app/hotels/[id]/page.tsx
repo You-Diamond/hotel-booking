@@ -1,5 +1,6 @@
 // src/app/hotels/[id]/page.tsx
 import Link from 'next/link';
+import Image from 'next/image';
 import { db } from '@/lib/db';
 import { notFound } from 'next/navigation';
 import RoomCard from '@/components/RoomCard';
@@ -38,7 +39,7 @@ export default async function HotelDetailPage({ params }: HotelDetailPageProps) 
   return (
     <div className="max-w-5xl mx-auto px-6 py-12 space-y-10">
       
-      {/* Верхняя панель навигации и управления */}
+      {/* Upper panel */}
       <div className="flex items-center justify-between">
         <Link href="/hotels" className="text-xs font-bold text-zinc-400 hover:text-zinc-900 transition-colors inline-flex items-center gap-2">
           ← Назад к списку отелей
@@ -58,8 +59,16 @@ export default async function HotelDetailPage({ params }: HotelDetailPageProps) 
       {/* Блок отеля */}
       <div className="space-y-6">
         <div className="relative aspect-video rounded-3xl overflow-hidden bg-zinc-100 border border-zinc-200/50">
-          <img src={hotel.image} alt={hotel.name} className="w-full h-full object-cover" />
-          <span className="absolute top-6 left-6 bg-white/95 backdrop-blur-xs px-4 py-2 rounded-xl text-sm font-black text-zinc-900 shadow-md">
+          {/* Заменено на Next.js Image */}
+          <Image 
+            src={hotel.image} 
+            alt={hotel.name} 
+            fill
+            priority // Страница детальная, загружаем картинку в первую очередь
+            sizes="(max-width: 1200px) 100vw, 1024px"
+            className="object-cover" 
+          />
+          <span className="absolute top-6 left-6 bg-white/95 backdrop-blur-xs px-4 py-2 rounded-xl text-sm font-black text-zinc-900 shadow-md z-10">
             ⭐ {hotel.rating}
           </span>
         </div>
