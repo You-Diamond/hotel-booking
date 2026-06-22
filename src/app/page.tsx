@@ -12,7 +12,7 @@ export default async function HomePage() {
   });
 
   const popularCities = [
-    { name: 'Москва', imgId: '1513622470522-26c328a9dc0f' },
+    { name: 'Москва', imgId: '1629140727571-9b5c6f6267b4' },
     { name: 'Санкт-Петербург', imgId: '1571896349842-33c89424de2d' },
     { name: 'Сочи', imgId: '1540555700478-4be289fbecef' },
     { name: 'Казань', imgId: '1520250497591-112f2f40a3f4' }
@@ -39,7 +39,7 @@ export default async function HomePage() {
               Отдых, которого вы достойны
             </h1>
             <p className="text-base sm:text-lg text-zinc-100 max-w-xl mx-auto drop-shadow-xs font-medium">
-              Эксклюзивные отели и individual-сервис для безупречных путешествий.
+              Эксклюзивные отели и индивидуальный сервис для безупречных путешествий.
             </p>
           </div>
 
@@ -52,7 +52,7 @@ export default async function HomePage() {
       <section className="max-w-7xl mx-auto px-6">
         <div className="space-y-2 mb-8">
           <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-zinc-900">Популярные направления</h2>
-          <p className="text-zinc-500 text-sm">Места, которые чаще всего выбирают наши clients</p>
+          <p className="text-zinc-500 text-sm">Места, которые чаще всего выбирают наши клиенты</p>
         </div>
         
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
